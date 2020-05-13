@@ -1,111 +1,128 @@
-<header class="ba_header-main absolute top-0 left-0 w-full p-6 bg-white md:p-8 md:bg-transparent">
+<header class="ba_header-main static text-black top-0 left-0 w-full p-6 bg-white md:p-8 md:bg-transparent">
     <div class="container-none">
         <div class="flex justify-between">
             <nav class="nav-container">
-				<div class="menu-btn cursor-pointer md:hidden" @click="toggleNavMob" >
-					<svg viewBox="0 0 100 80" width="30" height="40">
-						<rect width="100" height="8"></rect>
-						<rect y="27" width="100" height="8"></rect>
-						<rect y="54" width="100" height="8"></rect>
-					  </svg>
-				</div>
-				<div class="navigation-main bg-red-active fixed top-0 h-full w-full z-10 -left-full transition-all duration-500 md:duration md:transition-none md:bg-transparent md:relative md:inset-auto md:w-auto md:h-auto md:left-0 md:text-white"> 
-					<!-- close icon
+                <div @click="toggleNavMob" class="menu-btn cursor-pointer md:hidden">
+                    <svg height="40" viewbox="0 0 100 80" width="30">
+                        <rect height="8" width="100"></rect>
+                        <rect height="8" width="100" y="27"></rect>
+                        <rect height="8" width="100" y="54"></rect>
+                    </svg>
+                </div>
+                <div class="hidden md:block">
+                    <!-- close icon
 					<svg class="svg-icon" viewBox="0 0 20 20">
 						<path fill="none" d="M15.898,4.045c-0.271-0.272-0.713-0.272-0.986,0l-4.71,4.711L5.493,4.045c-0.272-0.272-0.714-0.272-0.986,0s-0.272,0.714,0,0.986l4.709,4.711l-4.71,4.711c-0.272,0.271-0.272,0.713,0,0.986c0.136,0.136,0.314,0.203,0.492,0.203c0.179,0,0.357-0.067,0.493-0.203l4.711-4.711l4.71,4.711c0.137,0.136,0.314,0.203,0.494,0.203c0.178,0,0.355-0.067,0.492-0.203c0.273-0.273,0.273-0.715,0-0.986l-4.711-4.711l4.711-4.711C16.172,4.759,16.172,4.317,15.898,4.045z"></path>
 					</svg> -->
-					<div class="level-0-container link-containers">
-						<ul class="level-0">
-							<li class="font-medium text-white block md:inline-block mr-3"><a href="">Women</a></li>
-							<li class="font-medium text-white block md:inline-block mr-3"><a href="">Unisex</a></li>
-							<li class="font-medium text-white block md:inline-block mr-3"><a href="">Men</a></li>
-							<li class="font-medium text-white block md:inline-block "><a href="">Projects</a></li>
-						</ul>
-					</div>
-					<div class="link-containers">
+                    <div class="level-0-container link-containers">
+                        <ul class="level-0">
+                            <li class="font-medium text-black block md:inline-block mr-3">
+                                <a href="">Women</a>
+                            </li>
+                            <li class="font-medium text-black block md:inline-block mr-3">
+                                <a href="">Unisex</a>
+                            </li>
+                            <li class="font-medium text-black block md:inline-block mr-3">
+                                <a href="">Men</a>
+                            </li>
+                            <li class="font-medium text-black block md:inline-block ">
+                                <a href="">Projects</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="link-containers"></div>
+                </div>
+            </nav>
 
-					</div>
-				</div>
-			</nav>
+            <div class="logo-cont">
+                <h1>
+                    <a href="">
+                        <picture>
+                            <source media="(max-width: 768px)" srcset="">
+                            <img alt="" src="">
+                        </picture>
+                    </a>
+                </h1>
+            </div>
 
-			<div class="logo-cont">
-				<h1><a href="">
-					<picture>
-						<source media="(max-width: 768px)" srcset="">
-						<img src="" alt="">
-					</picture>
-				</a></h1>
-			</div>
-
-			<div class="customer-cont">
-				<ul>
-					<li class="cust_login"><a href=""></a></li>
-					<li class="cust_cart">
-						<a href="">
-							<div class="flex items-center font-bold md:font-normal">
-								<span class="text mr-2 md:text-white md:font-medium">Cart</span>
-								<span class="circle-cont inline-block h-6 w-6 bg-gray-400 rounded-full relative">
-									<span class="cart-counter inline-block absolute top-half left-half transform translate-x-less translate-y-less text-sm">1</span>
-								</span>
-							</div>
-						</a>
-					</li>
-				</ul>
-			</div>
+            <div class="customer-cont">
+                <ul>
+                    <li class="cust_login">
+                        <a href=""></a>
+                    </li>
+                    <li class="cust_cart">
+                        <!-- <a href="/cart"> -->
+                        <div @click="showMiniCart" class="miniCartParent relative flex font-bold cursor-pointer md:font-normal">
+                            <span class="text mr-2 md:text-black md:font-medium">Cart</span>
+                            <!-- <span class="circle-cont inline-block h-6 w-6 bg-gray-400 rounded-full relative">   
+                                <span class="cart-counter inline-block absolute top-half left-half transform translate-x-less translate-y-less text-sm top-11px right-5px">${cart.item_count}</span>
+                            </span> -->
+                            <div class="miniCartChild absolute hidden border border-gray-300 top-35px right-0 bg-white w-auto">
+                                {% include 'mini-cart' %}
+                            </div>
+                        </div>
+                        <!-- </a> -->
+                    </li>
+                </ul>
+            </div>
 
         </div>
     </div>
 </header>
 
+<hr>
+
 {% schema %}
-  {
+
+{
     "name": "Header",
     "class": "main-header",
-	"blocks":[
-		{
-          "type": "header_items",
-          "name": "Header Items",
-		  "settings": [
-		  	{
-				"type": "image_picker",
-				"label": "Image for Promo Banner Drawer",
-				"id": "promo_banner_image"
-			},
-		  	{
-				"type": "text",
-				"label": "Promo Banners Header",
-				"id": "promo_header"
-			},
-		  	{
-				"type": "text",
-				"label": "Promo Banners DTI",
-				"id": "promo_dti"
-			},
-		  	{
-				"type": "html",
-				"label": "Promo Banners Details",
-				"id": "promo_details",
-				"default": "<ul> <li>Insert Details Inside li's</li> </ul>"
-			}
-	      ]
-		}
-		
-	],
+    "blocks": [
+        {
+            "type": "header_items",
+            "name": "Header Items",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "label": "Image for Promo Banner Drawer",
+                    "id": "promo_banner_image"
+                }, {
+                    "type": "text",
+                    "label": "Promo Banners Header",
+                    "id": "promo_header"
+                }, {
+                    "type": "text",
+                    "label": "Promo Banners DTI",
+                    "id": "promo_dti"
+                }, {
+                    "type": "html",
+                    "label": "Promo Banners Details",
+                    "id": "promo_details"
+                }
+            ]
+        }
+    ],
     "settings": [
-			{
-                "type": "checkbox",
-                "id": "enable",
-                "label": "Enable text banner"
-            }
-	],
-	"presets": [{
-      "name": "Header",
-      "category": "Advanced layout"
-	}]
-  }
+        {
+            "type": "checkbox",
+            "id": "enable",
+            "label": "Enable text banner"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Header",
+            "category": "Advanced layout"
+        }
+    ]
+}
+
 {% endschema %}
 
 {% stylesheet %}
+
+
+
 {% endstylesheet %}
 
 {% javascript %}

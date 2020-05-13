@@ -1,5 +1,28 @@
+@import './modules/_header.scss';
+@import './modules/_mini-cart.scss';
+@import "~noty/src/noty.scss";
+@import "~noty/src/themes/mint.scss";
+
+
 @import "tailwindcss/base";
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-
-@import './modules/_header.scss';

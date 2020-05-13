@@ -1,0 +1,101 @@
+<!-- <ul class="list-unstyled mini-cart w-300px">
+    <li class="media flex p-3 ">
+        <img alt="..." class="mr-3 w-1/2" src="https://via.placeholder.com/150">
+        <div class="media-body w-1/2">
+            <h5 class="mt-0 mb-1">List-based media object</h5>
+
+            <div class="price">
+                $30
+            </div>
+
+            <div class="input-group quantity mt-3 flex ">
+
+                <div class="input-group-prepend">
+                    <span class="input-group-text">-</span>
+                </div>
+
+                <input aria-label="Product quantity" class="form-control border-1/2 border-gray-300 text-center w-full " type="text" value="1">
+
+                <div class="input-group-append">
+                    <span class="input-group-text">+</span>
+                </div>
+
+            </div>
+
+        </div>
+    </li> -->
+
+    <!-- <li class="media my-4">
+        <img alt="..." class="mr-3" src="https://via.placeholder.com/150">
+        <div class="media-body">
+            <h5 class="mt-0 mb-1">List-based media object</h5>
+
+        </div>
+    </li> -->
+
+<template v-if="cart">
+    
+    <ul class="list-unstyled mini-cart w-300px border-1/2 border-gray-300">
+        <template  v-for="(item, index) in cart.items">
+            <li class="media flex border-b-1/2 border-gray-300 p-5">
+        
+                <template v-if="item.image">
+                    <a :href="item.url" class="h-auto"> 
+                        <img class="mt-5 p-5 md:p-0" width="150" :src="item.image" alt="">
+                    </a>
+                </template>
+
+                <div class="media-body text-sm ml-5">
+            
+                    <h5 class="title font-bold text-center mb-3"><a :href="item.url">${ item.product_title }</a></h5>
+                    <div class="flex justify-between mb-3">
+                    <template v-if="!item.product_has_only_default_variant">
+                        <p>${ item.variant_title }</p>
+                    </template>
+                
+                    <div class="price">
+                        <template v-if="item.original_line_price != item.line_price">
+            
+                        <span class="visually-hidden">{{ 'cart.label.discounted_price' | t }}</span>
+                            ${ item.price | money }
+                        <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
+                        <s>${ item.original_price | money  }</s>
+
+                        </template>
+
+                        <template v-else>
+                               ${ item.price * item.quantity | money }
+                        </template>
+                    </div>
+
+                    </div>
+
+                    <div class="input-group quantity flex justify-evenly">
+
+                        <label class="text-sm" for="Quantity">Qty: </label>
+                      
+                        <input type="number" v-model="item.quantity" class="form-control text-center border-1/2 border-gray-300" aria-label="Product quantity" min="0" max="10">
+                         
+                  
+
+                    </div>
+
+                </div>
+            </li>
+
+
+        </template> 
+
+            <div class="flex justify-evenly py-5 px-3">
+                <a class="btn btn-primary mr-3 px-3 py-2 bg-blue-600 text-white text-sm rounded-lg" href="/cart">Cart</a>
+                <a class="btn btn-success px-3 py-2 bg-green-700 text-white text-sm rounded-lg" href="/checkout">Checkout</a>
+            </div>
+    </ul> 
+</template>
+{% comment %} 
+    fix:  put the template tag before any elements
+{% endcomment %} 
+
+
+
+

@@ -1,0 +1,45 @@
+<div class="form mt-6">
+    {% form 'product', product, data-product-form: '', data-product-handle: product.handle, data-enable-history-state: 'true' %}
+
+        {% for product_option in product.options_with_values %}
+            <label class="block mb-2" for="Option">{{ product_option.name }}</label>
+            <select class="form-control border border-black w-full h-10 pl-3 mb-2 md:w-48" id="variant-id" name="id" v-model="form.id">
+                {% for variant in product.variants %}
+                    <option {% if variant == current_variant %} selected="selected" {% endif %} {% unless variant.available %} disabled="disabled" {% endunless %} value="{{ variant.id }}">
+                        {{ variant.title }}
+                    </option>
+                {% endfor %}
+            </select>
+
+
+        {% endfor %}
+
+
+        <noscript>
+            <select name="id">
+                {% for variant in product.variants %}
+                    <option {% if variant == current_variant %} selected="selected" {% endif %} {% unless variant.available %} disabled="disabled" {% endunless %} value="{{ variant.id }}">
+                        {{ variant.title }}
+                    </option>
+                {% endfor %}
+            </select>
+        </noscript>
+
+
+        <label class="block mb-2" for="Quantity">{{ 'products.product.quantity' | t }}</label>
+        <input class="border border-black w-full h-10 pl-3 mb-10 md:w-48" id="Quantity" min="1" name="quantity" type="number" v-model="form.quantity" value="1">
+
+
+        <button class="inline-block p-2 text-center w-full border border-gray-800 font-bold uppercase text-gray-800 hover:bg-black  hover:text-white" type="button" @click="addToCart" name="add" data-submit-button {% unless current_variant.available %} disabled="disabled" {% endunless %}>
+            <span data-submit-button-text>
+                {% if current_variant.available %}
+                    {{ 'products.product.add_to_cart' | t }}
+                {% else %}
+                    {{ 'products.product.sold_out' | t }}
+                {% endif %}
+            </span>
+        </button>
+
+    {% endform %}
+
+</div>

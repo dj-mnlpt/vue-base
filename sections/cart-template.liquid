@@ -1,0 +1,162 @@
+<div class="cart-wrapper pt-35px px-22px">
+
+    {% if cart.item_count > 0 %}
+        <div class="text-center mb-8">
+            <h1 class="text-desk-prod-title font-bold">Your cart</h1>
+            <a href="/collections/all" class="underline">
+                Continue shopping
+            </a>
+        </div>
+   
+        <form action="/cart" method="post" class="cart-form max-w-cart mx-auto" novalidate>
+          <table class="mb-27px table table-fixed">
+              <thead class="border-b-1/2 border-gray-300">
+                  <tr>
+                      <th colspan="2"
+                          class="pr-4 py-6 uppercase font-normal font-sans text-sm text-left w-1/2 md:3/4">
+                          {{ 'cart.label.product' | t }}</th>
+                      <th class="pl-4 py-6 uppercase font-normal font-sans text-sm text-right w-1/2 md:w-1/4">
+                          {{ 'cart.label.price' | t }}</th>
+                      <th
+                          class="pl-4 py-6 uppercase font-normal font-sans text-sm text-right w-1/4 hidden md:table-cell">
+                          {{ 'cart.label.quantity' | t }}</th>
+                      <th
+                          class="pl-4 py-6 uppercase font-normal font-sans text-sm text-right w-1/4 hidden md:table-cell">
+                          {{ 'cart.label.total' | t }}</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <!-- if cart has loaded and has items -->
+                <template v-if="cart">
+                
+                    <template v-for="(item, index) in cart.items">
+                     
+                      {% comment %}
+                      Cart Item Template
+                      =====================
+                      The data-label attributes on <td> elements are mobile-friendly
+                      helpers used for responsive-table labels
+                      {% endcomment %}
+              
+                        <tr class="border-b-1/2 border-gray-300">
+            
+                            <td class="w-1/2 md:w-1/5" data-label="{{ 'customer.order.product' | t }}">
+                                <template v-if="item.image">
+                                    <a :href="item.url">
+                                        <img class="py-5 pr-5" width="150" :src="item.image" alt="">
+                                    </a>
+                                </template>        
+                            </td>   
+                            
+                            <td class="w-1/2 text-sm py-5 md:pl-5 md:py-0 md:w-1/5 md:text-md">
+                                
+                                <a class="font-bold" :href="item.url">${ item.product_title }</a>
+                                <template v-if="!item.product_has_only_default_variant">
+                                    <p class="text-sm"><span class="text-xs">Size: </span>${ item.variant_title }</p>
+                                </template>
+                        
+                                {%- assign property_size = item.properties | size -%}
+                            
+                                <template v-if="item.properties">
+                                    <template v-for="p in item.properties">
+                                        <template v-if="p.first">
+                                            ${p.first}
+                                            <template v-if="p.last.includes('/uploads/')">
+                                                <a :href="p.last"> ${p.last.split('/').pop()} </a>
+                                            </template>
+                                            <template v-else>
+                                                ${p.last}
+                                            </template>
+                                        </template>
+                                    </template>
+                                </template>    
+                                
+                                <!-- <a href="/cart/change?line={{ forloop.index }}&quantity=0">
+                                    <small>{{ 'cart.general.remove' | t }}</small>
+                                </a> -->
+                                
+                            </td>
+                            
+                            <td class="w-full text-right table-row float-right md:w-1/5  md:table-cell md:float-none"
+                                data-label="{{ 'cart.label.price' | t }}">
+                                <div class="py-4 text-sm md:py-0 ">
+                                    <template v-if="item.original_line_price != item.line_price">
+                                        <span class="visually-hidden">{{ 'cart.label.discounted_price' | t }}</span>
+                                        ${item.price | money}
+                                        <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
+                                        <s>${ item.original_price | money}</s>
+                                    </template>
+            
+                                    <template v-else>
+                                        ${item.price | money}
+                                    </template>
+                                </div>
+                            </td>
+
+                            <td class="w-full text-right table-row float-right md:w-1/5  md:table-cell md:float-none"
+                                data-label="{{ 'cart.label.quantity' | t }}">
+                                <div class="py-4 md:py-0">
+                                    <label class="text-sm mr-3 md:hidden" for="Quantity">Qty</label>
+                                    <input type="number"
+                                            class="form-control w-16 h-10 pl-3 border-1/2 border-gray-300"
+                                            name="updates[]"
+                                            :id="'updates_'+item.key"
+                                            v-model="item.quantity"
+                                            value="1"
+                                            min="0"
+                                            max="10"
+                                            aria-label="{{ 'cart.general.item_quantity' | t }}">
+                                            
+                                </div>
+                            </td>
+                            <td class="w-1/4 hidden text-right md:w-1/5 md:table-cell"
+                            data-label="{{ 'cart.label.total' | t }}">
+                                ${ lineTotalPrice(item) | money }
+                            </td>
+                        </tr>
+                    </template>
+                </template>
+              </tbody>
+            </table>
+  
+          <div class="text-center md:text-right">
+  
+              <p class="mb-4 text-gray-800 text-lg font-medium">{{ 'cart.general.subtotal' | t }}<span class="ml-8" v-if='cart'>${ cartTotalPrice | money }</span></p>
+              <div class="text-sm mb-4">
+                  {% if cart.total_discounts > 0 %}
+                  <p>{{ 'cart.general.savings' | t }} {{ cart.total_discounts | money }}</p>
+                  {% endif %}
+                  <p>{{ 'cart.general.shipping_at_checkout' | t }}</p>
+              </div>
+          
+              <input type="button" @click="updateCart" name="update" class="btn btn-success" value="{{ 'cart.general.update' | t }}">
+              <input class="mb-4 px-5 py-2 uppercase font-bold bg-gray-700 text-white" type="submit" name="checkout" class="btn btn-primary" class="button" value="{{ 'cart.general.checkout' | t }}">
+  
+          </div>
+
+        </form>
+  
+    {% else %}
+
+    {% comment %}
+    Cart empty state
+    {% endcomment %}
+
+    <div class="supports-cookies text-center mb-10">
+        <p class="text-xl font-bold uppercase">{{ 'cart.general.empty' | t }}</p>
+        <p><a href="/collections/all">{{ 'cart.general.continue_browsing_html' | t }}</a></p>
+    </div>
+
+    {% comment %}
+    Cart no cookies state
+    ---------------------
+    Browser cookies are required to use the cart. If cookies aren't enabled in the
+    browser a message is displayed prompting the user to enable them.
+    {% endcomment %}
+
+    <div class="supports-no-cookies text-center">
+        <p>{{ 'cart.general.cookies_required' | t }}</p>
+    </div> 
+    {% endif %}
+  
+  </div> 

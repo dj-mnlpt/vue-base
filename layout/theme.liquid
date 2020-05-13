@@ -1,5 +1,6 @@
 <!doctype html>
 <html class="no-js supports-no-cookies" lang="{{ shop.locale }}">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,28 +9,28 @@
   <link rel="canonical" href="{{ canonical_url }}">
 
   {%- if settings.favicon != blank -%}
-    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+  <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
   {%- endif -%}
 
   {%- capture seo_title -%}
-    {{ page_title }}
-    {%- if current_tags -%}
-      {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
-    {%- endif -%}
-    {%- if current_page != 1 -%}
-      &ndash; {{ 'general.meta.page' | t: page: current_page }}
-    {%- endif -%}
-    {%- assign escaped_page_title = page_title | escape -%}
-    {%- unless escaped_page_title contains shop.name -%}
-      &ndash; {{ shop.name }}
-    {%- endunless -%}
+  {{ page_title }}
+  {%- if current_tags -%}
+  {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+  {%- endif -%}
+  {%- if current_page != 1 -%}
+  &ndash; {{ 'general.meta.page' | t: page: current_page }}
+  {%- endif -%}
+  {%- assign escaped_page_title = page_title | escape -%}
+  {%- unless escaped_page_title contains shop.name -%}
+  &ndash; {{ shop.name }}
+  {%- endunless -%}
   {%- endcapture -%}
   <title>{{ seo_title | strip }}</title>
 
   {%- if page_description -%}
-    <meta name="description" content="{{ page_description | escape }}">
+  <meta name="description" content="{{ page_description | escape }}">
   {%- endif -%}
-  
+
   {{ 'app.css' | asset_url | stylesheet_tag}}
 
   <script>
@@ -37,28 +38,46 @@
 
     window.theme = {
       strings: {
-        addToCart: {{ 'products.product.add_to_cart' | t | json }},
-        soldOut: {{ 'products.product.sold_out' | t | json }},
-        unavailable: {{ 'products.product.unavailable' | t | json }}
+        addToCart: {
+          {
+            'products.product.add_to_cart' | t | json
+          }
+        },
+        soldOut: {
+          {
+            'products.product.sold_out' | t | json
+          }
+        },
+        unavailable: {
+          {
+            'products.product.unavailable' | t | json
+          }
+        }
       },
-      moneyFormat: {{ shop.money_format | json }}
+      moneyFormat: {
+        {
+          shop.money_format | json
+        }
+      }
     };
   </script>
   {{ content_for_header }}
 </head>
 
-<body id="{{ page_title | handle }}" class="template-{{ template.name | handle }} bg-gray-600"></body>
+<body id="{{ page_title | handle }}" class="template-{{ template.name | handle }} bg-white"></body>
 
-  {% section 'ba-header' %}
+{% section 'ba-header' %}
 
-  <main role="main" id="MainContent">
-    {{ content_for_layout }}
-    <div id="cont">
-    </div>
-  </main>
+<main role="main" id="MainContent">
+  {{ content_for_layout }}
+  <div id="cont">
+  </div>
+</main>
 
-  {% comment %} {% section 'footer' %} {% endcomment %}
+{% comment %} {% section 'footer' %} {% endcomment %}
 
-  {{ 'app.js' | asset_url | script_tag }}
+{{ 'app.js' | asset_url | script_tag }}
+
 </body>
+
 </html>
